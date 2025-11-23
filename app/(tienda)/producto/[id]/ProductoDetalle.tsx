@@ -21,14 +21,6 @@ export default function ProductoDetalle({ producto, config }: Props) {
   const precio = tieneOferta ? producto.precio_oferta! : producto.precio;
   const stock = calcularStock(producto.variantes);
 
-  // Incrementar contador de clicks al abrir WhatsApp
-  const handleWhatsAppClick = async () => {
-    await supabase
-      .from('productos')
-      .update({ clicks_whatsapp: producto.clicks_whatsapp + 1 })
-      .eq('id', producto.id);
-  };
-
   return (
     <div className="bg-white min-h-screen">
       {/* Header */}
@@ -170,19 +162,17 @@ export default function ProductoDetalle({ producto, config }: Props) {
           })}
         </div>
 
-        {/* Espaciado para botón fijo */}
-        <div className="h-20" />
+        {/* Espaciado para botón fijo - REDUCIDO */}
+        <div className="h-16" />
       </div>
 
-      {/* Botón WhatsApp fijo */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
-        <div onClick={handleWhatsAppClick}>
-          <WhatsAppButton
-            producto={producto}
-            talla={talla}
-            whatsapp={config.whatsapp}
-          />
-        </div>
+      {/* Botón WhatsApp fijo - CORREGIDO */}
+      <div className="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-100 z-50 shadow-lg">
+        <WhatsAppButton
+          producto={producto}
+          talla={talla}
+          whatsapp={config.whatsapp}
+        />
       </div>
     </div>
   );

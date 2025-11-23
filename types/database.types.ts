@@ -46,7 +46,7 @@ export interface Database {
           facebook: string | null
           id: string
           instagram: string | null
-          logo_url: string | null
+          logo_svg: string | null
           mensaje_wa_template: string | null
           nombre_tienda: string | null
           whatsapp: string | null
@@ -57,7 +57,7 @@ export interface Database {
           facebook?: string | null
           id?: string
           instagram?: string | null
-          logo_url?: string | null
+          logo_svg?: string | null
           mensaje_wa_template?: string | null
           nombre_tienda?: string | null
           whatsapp?: string | null
@@ -68,7 +68,7 @@ export interface Database {
           facebook?: string | null
           id?: string
           instagram?: string | null
-          logo_url?: string | null
+          logo_svg?: string | null
           mensaje_wa_template?: string | null
           nombre_tienda?: string | null
           whatsapp?: string | null

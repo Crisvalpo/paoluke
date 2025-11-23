@@ -37,11 +37,8 @@ export default async function HomePage() {
 
   return (
     <main className="p-4">
-      <Banner 
-        titulo="¡Navidad 2025!" 
-        subtitulo="El disfraz perfecto"
-        emoji="🎄"
-      />
+      {/* CAMBIO IMPORTANTE: Banner sin props para que use la configuración dinámica */}
+      <Banner />
 
       <div className="mb-5">
         <h3 className="font-bold text-gray-800 mb-3">Categorías</h3>

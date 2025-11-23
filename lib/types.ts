@@ -4,7 +4,7 @@ export interface Config {
     whatsapp: string;
     instagram?: string;
     facebook?: string;
-    logo_url?: string;
+    logo_svg?: string;
     mensaje_wa_template: string;
     dias_ocultar_vendidos: number;
   }
