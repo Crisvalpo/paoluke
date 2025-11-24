@@ -36,7 +36,6 @@ export default async function CategoriaPage({ params, searchParams }: Props) {
 
   if (!categoria) notFound();
 
-  // Filtrar por subcategoría
   let productosFiltrados = productos;
   if (sub) {
     productosFiltrados = productos.filter(
@@ -44,7 +43,6 @@ export default async function CategoriaPage({ params, searchParams }: Props) {
     );
   }
 
-  // Ordenar
   if (orden === 'precio') {
     productosFiltrados.sort(
       (a, b) => (a.precio_oferta || a.precio) - (b.precio_oferta || b.precio)
@@ -133,19 +131,21 @@ export default async function CategoriaPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      {/* Grid de productos */}
-      <div className="p-4 grid grid-cols-2 gap-3">
-        {productosFiltrados.map((p) => (
-          <ProductCard key={p.id} producto={p} />
-        ))}
-      </div>
-
-      {productosFiltrados.length === 0 && (
-        <div className="text-center py-12">
-          <span className="text-5xl block mb-4">📦</span>
-          <p className="text-gray-500">No hay productos en esta categoría</p>
+      {/* Grid de productos - Responsive mejorado */}
+      <div className="p-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          {productosFiltrados.map((p) => (
+            <ProductCard key={p.id} producto={p} />
+          ))}
         </div>
-      )}
+
+        {productosFiltrados.length === 0 && (
+          <div className="text-center py-12">
+            <span className="text-5xl block mb-4">📦</span>
+            <p className="text-gray-500">No hay productos en esta categoría</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

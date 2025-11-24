@@ -1,7 +1,7 @@
 'use client';
 import { useProductos, useAuth } from '@/lib/hooks';
 import Link from 'next/link';
-import { Plus, Printer, LogOut } from 'lucide-react';
+import { Plus, LogOut } from 'lucide-react';
 import StatsCard from '@/components/admin/StatsCard';
 import AdminProductCard from '@/components/admin/AdminProductCard';
 import EstadoModal from '@/components/admin/EstadoModal';
@@ -45,6 +45,16 @@ export default function AdminDashboard() {
     setModalEstado(null);
   };
 
+  // NUEVA FUNCION PARA ELIMINAR PRODUCTO
+  const eliminarProducto = async (id: string) => {
+    const { error } = await supabase.from('productos').delete().eq('id', id);
+    if (error) {
+      console.error('Error eliminando producto:', error.message);
+      return;
+    }
+    setProductos(productos.filter(p => p.id !== id));
+  };
+
   const recientes = [...productos]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 5);
@@ -72,50 +82,43 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div className="p-4 space-y-4">
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-3">
+      <div className="p-4 space-y-4 max-w-7xl mx-auto">
+        {/* Stats - Mejorado para desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <StatsCard valor={stats.disponibles} label="Disponibles" color="#10B981" />
           <StatsCard valor={stats.reservados} label="Reservados" color="#F59E0B" />
           <StatsCard valor={stats.vendidos} label="Vendidos" color="#EF4444" />
           <StatsCard valor={stats.stockBajo} label="Stock bajo" color="#F97316" />
         </div>
 
-        {/* Acciones rápidas */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Acción rápida - Centrada */}
+        <div className="max-w-md mx-auto lg:max-w-sm">
           <Link
             href="/admin/producto/nuevo"
-            className="bg-white rounded-xl p-4 shadow-sm text-left active:scale-95 transition-transform block"
+            className="bg-white rounded-xl p-6 shadow-sm text-center active:scale-95 transition-transform block hover:shadow-md"
           >
-            <Plus size={32} className="text-pink-500 mb-2" />
-            <p className="font-bold text-gray-800">Nuevo producto</p>
-            <p className="text-sm text-gray-500">Agregar al catálogo</p>
-          </Link>
-          <Link
-            href="/admin/ticket"
-            className="bg-white rounded-xl p-4 shadow-sm text-left active:scale-95 transition-transform block"
-          >
-            <Printer size={32} className="text-cyan-500 mb-2" />
-            <p className="font-bold text-gray-800">Generar ticket</p>
-            <p className="text-sm text-gray-500">Para impresora</p>
+            <Plus size={48} className="text-pink-500 mb-3 mx-auto" />
+            <p className="font-bold text-gray-800 text-lg">Nuevo producto</p>
+            <p className="text-sm text-gray-500 mt-1">Agregar al catálogo</p>
           </Link>
         </div>
 
         {/* Productos recientes */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-gray-800">Últimos productos</h2>
+            <h2 className="font-bold text-gray-800 text-lg">Últimos productos</h2>
             <Link href="/admin/productos" className="text-sm font-medium" style={{ color: '#E91E8C' }}>
               Ver todos
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {recientes.map((p) => (
               <AdminProductCard
                 key={p.id}
                 producto={p}
                 onEdit={() => window.location.href = `/admin/producto/${p.id}`}
                 onEstado={() => setModalEstado(p)}
+                onDelete={() => eliminarProducto(p.id)} // <-- AGREGADO
               />
             ))}
           </div>

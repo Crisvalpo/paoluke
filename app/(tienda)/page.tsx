@@ -3,7 +3,7 @@ import Banner from '@/components/tienda/Banner';
 import CategoryList from '@/components/tienda/CategoryList';
 import ProductGrid from '@/components/tienda/ProductGrid';
 
-export const revalidate = 60; // Revalidar cada 60 segundos
+export const revalidate = 60;
 
 async function getData() {
   const [categoriasRes, productosRes] = await Promise.all([
@@ -36,35 +36,47 @@ export default async function HomePage() {
   const nuevos = productos.slice(0, 4);
 
   return (
-    <main className="p-4">
-      {/* CAMBIO IMPORTANTE: Banner sin props para que use la configuración dinámica */}
-      <Banner />
+    <main className="p-4 max-w-7xl mx-auto">
+      {/* Banner - Centrado en desktop */}
+      <div className="max-w-4xl mx-auto">
+        <Banner />
+      </div>
 
+      {/* Categorías */}
       <div className="mb-5">
-        <h3 className="font-bold text-gray-800 mb-3">Categorías</h3>
+        <h3 className="font-bold text-gray-800 mb-3 text-lg">Categorías</h3>
         <CategoryList categorias={categorias} horizontal />
       </div>
 
-      {ofertas.length > 0 && (
-        <ProductGrid 
-          productos={ofertas.slice(0, 4)} 
-          titulo="🔥 Ofertas" 
-          verTodo="/ofertas"
-        />
-      )}
+      {/* Productos - Grid responsive */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {ofertas.length > 0 && (
+          <div>
+            <ProductGrid 
+              productos={ofertas.slice(0, 4)} 
+              titulo="🔥 Ofertas" 
+              verTodo="/ofertas"
+            />
+          </div>
+        )}
 
-      {populares.length > 0 && (
-        <ProductGrid 
-          productos={populares} 
-          titulo="⭐ Populares" 
-        />
-      )}
+        {populares.length > 0 && (
+          <div>
+            <ProductGrid 
+              productos={populares} 
+              titulo="⭐ Populares" 
+            />
+          </div>
+        )}
+      </div>
 
       {nuevos.length > 0 && (
-        <ProductGrid 
-          productos={nuevos} 
-          titulo="✨ Lo nuevo" 
-        />
+        <div className="mt-5">
+          <ProductGrid 
+            productos={nuevos} 
+            titulo="✨ Lo nuevo" 
+          />
+        </div>
       )}
     </main>
   );
